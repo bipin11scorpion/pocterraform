@@ -22,8 +22,8 @@ jobs:
 
     - name: Build the Docker image
       run: |
-        docker build . --file Dockerfile --tag ${{ secrets.REGISTRY_LOGIN_SERVER }}/bpn-image-name:${{ github.sha }}
+        docker build . --file Dockerfile --tag pocterraform.azurecr.io/pocterraform/be/bpn-image-name:latest
 
     - name: Push image to Azure Container Registry
       run: |
-        docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/bpn-image-name:${{ github.sha }}
+        docker push "pocterraform.azurecr.io/pocterraform/be/bpn-image-name:latest"
