@@ -42,7 +42,7 @@ jobs:
             az account set --subscription $AZURE_SUBSCRIPTION_ID
             
             APP_NAME="poc-terraform"
-            RESOURCE_GROUP="poc-terrsaform-rg"
+            RESOURCE_GROUP="poc-terraform_group"
             APP_SERVICE_PLAN="appbuild"
             DOCKER_IMAGE=pocterraform.azurecr.io/pocterraform/be/bpn-image-name:latest
             ACR_URL=https://pocterraform.azurecr.io
