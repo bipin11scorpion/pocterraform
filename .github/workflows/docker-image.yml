@@ -28,33 +28,38 @@ jobs:
         run: |
           docker push "pocterraform.azurecr.io/pocterraform/be/bpn-image-name:latest"
 
+      - name: Set up Azure CLI
+        uses: azure/setup-azure-cli@v1
+        with:
+          version: '2.49.0'
+
       - name: Create or Redeploy Azure Web App
         uses: azure/cli@v1
-        with:
-          azcliversion: 2.49.0
         env:
           AZURE_CLIENT_ID: "00c9b931-360b-4a7b-8403-dbe7a63bdfdc"
           AZURE_TENANT_ID: "0513bffd-911d-42cd-96ea-1c8106fd6352"
           AZURE_CLIENT_SECRET: "_018Q~sG8Q7OjrVHQ._ADkRsw8.~H-TWqSDpxc6f"
           AZURE_SUBSCRIPTION_ID: "c5fa1da5-09eb-44d6-8e70-cb870a4e5e2e"
-        run: |
-          az login --service-principal -u $AZURE_CLIENT_ID -p $AZURE_CLIENT_SECRET --tenant $AZURE_TENANT_ID
-          az account set --subscription $AZURE_SUBSCRIPTION_ID
-          
-          APP_NAME=terraform-poc
-          RESOURCE_GROUP=terraform-poc-rg
-          APP_SERVICE_PLAN=terraform-poc-asp
-          DOCKER_IMAGE=pocterraform.azurecr.io/pocterraform/be/bpn-image-name:latest
-          ACR_URL=https://pocterraform.azurecr.io
+        with:
+          inlineScript: |
+            az version
+            az login --service-principal -u $AZURE_CLIENT_ID -p $AZURE_CLIENT_SECRET --tenant $AZURE_TENANT_ID
+            az account set --subscription $AZURE_SUBSCRIPTION_ID
+            
+            APP_NAME=terraform-poc
+            RESOURCE_GROUP=terraform-poc-rg
+            APP_SERVICE_PLAN=terraform-poc-asp
+            DOCKER_IMAGE=pocterraform.azurecr.io/pocterraform/be/bpn-image-name:latest
+            ACR_URL=https://pocterraform.azurecr.io
 
-          # Check if Web App exists
-          if ! az webapp show --name $APP_NAME --resource-group $RESOURCE_GROUP > /dev/null; then
-            echo "Web app does not exist. Creating Web App..."
-            az webapp create --name $APP_NAME --plan $APP_SERVICE_PLAN --resource-group $RESOURCE_GROUP --deployment-container-image-name $DOCKER_IMAGE
-          else
-            echo "Web app exists. Updating container image..."
-            az webapp config container set --name $APP_NAME --resource-group $RESOURCE_GROUP --docker-custom-image-name $DOCKER_IMAGE --docker-registry-server-url $ACR_URL
-          fi
+            # Check if Web App exists
+            if ! az webapp show --name $APP_NAME --resource-group $RESOURCE_GROUP > /dev/null; then
+              echo "Web app does not exist. Creating Web App..."
+              az webapp create --name $APP_NAME --plan $APP_SERVICE_PLAN --resource-group $RESOURCE_GROUP --deployment-container-image-name $DOCKER_IMAGE
+            else
+              echo "Web app exists. Updating container image..."
+              az webapp config container set --name $APP_NAME --resource-group $RESOURCE_GROUP --docker-custom-image-name $DOCKER_IMAGE --docker-registry-server-url $ACR_URL
+            fi
 
-          # Restart the web app to pick up the new image
-          az webapp restart --name $APP_NAME --resource-group $RESOURCE_GROUP
+            # Restart the web app to pick up the new image
+            az webapp restart --name $APP_NAME --resource-group $RESOURCE_GROUP
