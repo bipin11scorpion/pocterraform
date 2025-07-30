@@ -43,7 +43,7 @@ jobs:
             
             APP_NAME=terraform-poc
             RESOURCE_GROUP=terraform-poc-rg
-            APP_SERVICE_PLAN=terraform-poc-asp
+            APP_SERVICE_PLAN="ASP-pocfastapitodeletegroup-8958"
             DOCKER_IMAGE=pocterraform.azurecr.io/pocterraform/be/bpn-image-name:latest
             ACR_URL=https://pocterraform.azurecr.io
 
