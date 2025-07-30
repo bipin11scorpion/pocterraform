@@ -41,9 +41,9 @@ jobs:
             az login --service-principal -u $AZURE_CLIENT_ID -p $AZURE_CLIENT_SECRET --tenant $AZURE_TENANT_ID
             az account set --subscription $AZURE_SUBSCRIPTION_ID
             
-            APP_NAME=to-delete
-            RESOURCE_GROUP=rice-test
-            APP_SERVICE_PLAN="ASP-pocfastapitodeletegroup-8958"
+            APP_NAME="poc-terraform"
+            RESOURCE_GROUP="poc-terraform-rg"
+            APP_SERVICE_PLAN="appbuild"
             DOCKER_IMAGE=pocterraform.azurecr.io/pocterraform/be/bpn-image-name:latest
             ACR_URL=https://pocterraform.azurecr.io
 
