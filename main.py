@@ -8,4 +8,4 @@ def read_root():
     with open('C:\POCs\mounteddockerfiles\data\hello.txt', 'w') as f:
         f.write('Hello from Docker!')
 
-    return {"message": "Hello, World!"}
+    return {"message": "Hello, World v2!"}
